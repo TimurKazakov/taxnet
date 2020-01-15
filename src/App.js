@@ -16,11 +16,11 @@ class App extends React.Component{
             <div className="App">
                 <Search/>
                 <hr/>
-                { this.props.location.pathname !=='/search'?
+                { !this.props.location.pathname.match(new RegExp('^/search')) ?
                  <ul className={'App__navigation--list'}>
                     <NavLink exact to={'/'}>Все фильмы</NavLink>
                     <NavLink to={'/bookmarks'}>Закладки</NavLink>
-                    <NavLink to={'/search'}>Search</NavLink>
+                    {/*<NavLink to={'/search'}>Search</NavLink>*/}
                 </ul>
                 :<ReturnButton/>
                 }
@@ -31,10 +31,11 @@ class App extends React.Component{
                 <Route path={'/bookmarks'}  render={()=> <Tab>
                         <FilmsList films={this.props.bookmarks}/>
                     </Tab>} />
-                <Route path={'/search'}  render={()=> <Tab>
-                    <FilmsList films={this.props.films}/>
-                </Tab>} />
+                {/*<Route path={'/search'}  render={()=> <Tab>*/}
+                {/*    <FilmsList films={this.props.films}/>*/}
+                {/*</Tab>} />*/}
                 <Route path={'/film/:title'} exact render={(props) => <Film title={props.name} {...props} />}/>
+                {this.props.children}
             </div>
         );
     }

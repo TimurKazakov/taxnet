@@ -1,62 +1,99 @@
 import React from 'react';
-import  './FilmsList.css';
-import {withRouter, Link} from 'react-router-dom';
+import './FilmsList.css';
+import {Link, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {addTag, } from "../../redux/actions/actions";
 
 
 class FilmsList extends React.Component {
+
+
+    componentDidMount() {
+
+    }
+
     state={
         filteredArray:this.props.films,
         previewCount:10,
         allFilmsCount: this.props.films.length,
+        bookmarksArray:this.bookmarksArrayProvider(),
 
     }
+    // bookmarks logic
+    bookmarksArrayProvider(){
+        let bookmarksArray = [];
 
-    countedMovies(moviesArray = this.state.filteredArray){
-        return   this.renderFilms( moviesArray.filter((item, index)=>index<=this.state.previewCount));
+        for (let key in localStorage){
+            for (let i = 0; i <this.props.films.length ; i++) {
+                if (key === this.props.films[i].title){
+                    bookmarksArray.push(this.props.films[i]);
+                    break
+                }
+            }
+        }
+
+        return  bookmarksArray
     }
+    bookmarkHandler=(event)=>{
+        let title = event.target.closest('li').firstChild.innerHTML;
+
+        if (localStorage.getItem(title)===null) {
+            localStorage.setItem(title, title);
+            event.target.classList.add('add');
+            this.forceUpdate();
+        } else {
+            localStorage.removeItem(title);
+            event.target.classList.remove('add');
+            this.forceUpdate();
+        }
+
+
+
+    }
+    //add button
     addFilteredItemHandler=()=>{
         this.setState({
             previewCount:this.state.previewCount+10,
         })
     }
-    bookmarkHandler=(event)=>{
-            let title = event.target.closest('li').firstChild.innerHTML;
 
-            localStorage.getItem(title)===null
-                ?
-                localStorage.setItem(title,title)
-                :
-                localStorage.removeItem(title);
-
-        console.log(localStorage.getItem(title));
-
-
+    tagHandler=(event)=>{
+            if (event.target.classList.contains('FilmsList__item__tag')) {
+                // this.props.history.push('/searchbytag');
+                this.props.onAddTag(event.target.innerHTML.trim());
+            }
     }
 
-    renderFilms(moviesArray=this.state.filteredArray){
+    //render list with handler
+    renderFilms(moviesArray=this.props.films){
         return   moviesArray.map((movie)=>{
             return (
                 <li   className={'FilmsList__item'} key={movie.title}>
                     <Link  to={{
                         pathname: '/film/'+movie.title,
                         title: movie.title,
+                        background: `rgba(${Math.floor( Math.random()*255)},${Math.floor( Math.random()*255)},${Math.floor( Math.random()*255)})`,
                     }}  className={'FilmsList__item__title'} >{movie.title}
                     </Link>
-                    <div className={'FilmsList__item__tag-wrapper'}>
-                        { movie.tags.map( function(item, index){ return(<label key={index}  className={'FilmsList__item__tag'}>{item}, </label>)})}
+                    <div className={'FilmsList__item__tag-wrapper'} onClick={(event)=>this.tagHandler(event)}>
+                        { movie.tags.map( function(item, index){ return(<label key={index}   className={'FilmsList__item__tag'}>{item} </label>)})}
                     </div>
-                    <img src={'logo192.png'} onClick={(event)=>this.bookmarkHandler(event)} className={'FilmsList__item__bookmark'}/>
+                    <div  onClick={(event)=>this.bookmarkHandler(event)} className={ (localStorage.getItem(movie.title)===null)?'FilmsList__item__bookmark':'FilmsList__item__bookmark add'}/>
                 </li>
             )
         })
     }
+    // render logic
+    countedMovies(moviesArray = this.props.films){
+        return   this.renderFilms( moviesArray.filter((item, index)=>index<=this.state.previewCount));
+    }
+    findMoviesByTag(arr=this.props.films){
 
-    findMoviesByTag(){
-        let tagFilter = this.state.filteredArray.filter((item)=>{
+        let tagFilter = arr.filter((item)=>{
             let isSuitable = true;
-            for (let i = 0; i <this.state.currentFilterTag.length ; i++) {
-                if (!item.tags.join(", ").includes(this.state.currentFilterTag[i])){
+            for (let i = 0; i <this.props.currentFilterTag.length ; i++) {
+
+                if (!item.tags.join(" ").includes(this.props.currentFilterTag[i].trim())){
                     isSuitable =false;
                 }
             }
@@ -64,35 +101,48 @@ class FilmsList extends React.Component {
             return isSuitable;
         })
 
-        this.setState({
-            filteredArray : tagFilter,
-        })
+       return tagFilter;
     }
-
-    findMovieByTitle =(value)=>{
+    findMovieByTitle =()=>{
 
         let searchArray = this.props.location.search.slice(1).split('=');
-        value = searchArray[1];
+        let value = searchArray[1] ||'';
 
         let arr = this.state.filteredArray;
-        let array = arr.filter((item)=>item.title.toLowerCase().includes(value.toLowerCase()));
-        this.setState({
-            filteredArray: array
-        })
+        return  arr.filter((item)=>item.title.toLowerCase().includes(value.toLowerCase()));
+
+
 
     }
 
     render() {
         let  disableButton=()=>{
-            return((this.state.previewCount <this.state.filteredArray.length));
+            return((this.state.previewCount <arrayToRender().length));}
+        let arrayToRender=()=>{
+            let arrayToRender = this.props.films;
+            let path = this.props.location.pathname;
+            if (path==='/' || path==='/searchbytag')
+            {
+                return  this.findMoviesByTag();
+
+            }
+            else if (path==='/bookmarks')  {
+
+                return   this.findMoviesByTag( this.state.bookmarksArray);
+            }
+            else{
+              let arr=  this.findMovieByTitle();
+               arr=  this.findMoviesByTag(arr);
+                return arr;
+            }
+
+            return arrayToRender;
         }
 
         return (
-
             <div className={"FilmsList"}>
                 <ul className={"FilmsList__list" } >
-                    {this.countedMovies()}
-
+                    {this.countedMovies(arrayToRender())}
                 </ul>
                 {disableButton()?
                     <button id={'addItemButton'} className={'FilmsList__button'} onClick={()=>this.addFilteredItemHandler()}>Показать еще</button>
@@ -117,7 +167,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return{
-        onAdd:()=>dispatch({type:'ADDBOOKMARK'}),
+        onAddTag:(tag)=>dispatch(addTag(tag)),
 
 
     }

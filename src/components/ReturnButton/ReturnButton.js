@@ -3,15 +3,15 @@ import './ReturnButton.css';
 import {withRouter} from 'react-router-dom'
 import {clearFilterTitle} from "../../redux/actions/actions";
 import {connect} from "react-redux";
+import inputForceUpdate from '../Search/Search';
 
 
 class  ReturnButton extends React.Component{
 
     returnButtonHandler(){
-        console.log( 'btn props', this.props);
-
-        this.props.endSearch('');
-        console.log( 'filterTitle', this.props.filterTitle);
+        this.props.endSearch();
+        this.forceUpdate();
+        document.getElementById('Search__input').value = "";
         return  this.props.history.push('/');
 }
 

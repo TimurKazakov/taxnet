@@ -16,7 +16,7 @@
 .Film__poster{
     width: 150px;
     height: 200px;
-    background-color: brown;
+    /*background-color: brown;*/
 }
 .Film__descr{
     display: flex;

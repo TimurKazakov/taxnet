@@ -1,5 +1,6 @@
 .FilmsList{
-
+    display: flex;
+    flex-direction: column;
 }
 
 .FilmsList__list{
@@ -11,6 +12,8 @@
     display: flex;
     align-content: center;
     margin: 10px 30px;
+    border: 1px solid black;
+    padding: 20px;
 
 }
 .FilmsList__item__title{
@@ -48,7 +51,6 @@
     right: 0px;
     text-align: right;
     font-size: 14px;
-    background: url("../../img/iconmonstr-bookmark-1-240.png");
     align-self: center;
     vertical-align: bottom;
     padding: 10px 10px;
@@ -57,17 +59,41 @@
 .FilmsList__item__bookmark:before{
     content: "";
     display: block;
-    width: 60px;
-    height: 60px;
-    background: url("../../img/iconmonstr-bookmark-1-240.png");
-    z-index: 10;
+    width: 40px;
+    height: 40px;
+    background: url("../../img/iconmonstr-bookmark-2-240.png") no-repeat;
+    background-size: cover;
     position: absolute;
+    left: 0;
+    bottom: -10px;
+
+}
+.add.FilmsList__item__bookmark:before{
+    content: "";
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: url("../../img/iconmonstr-bookmark-1-240.png") no-repeat;
+    background-size: cover;
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+
 }
 
 .FilmsList__button{
+    height: 50px;
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+    align-self: start;
 
+    margin: 10px 70px;
+    border-radius: 5px;
+    background: gray;
+    color: white;
 }
 
 .disabled{
-    display: none;
+
 }

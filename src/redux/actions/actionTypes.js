@@ -1,5 +1,3 @@
-export  const ADDBOOKMARK="ADD";
-export  const REMOVEBOOKMARK="DELETEBOOKMARK";
 export  const ADDTAG="ADDTAG";
 export  const REMOVETAG="REMOVETAG";
 export  const FILTERTITLE="FILTERTITLE";

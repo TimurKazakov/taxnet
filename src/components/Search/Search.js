@@ -2,23 +2,25 @@ import React from 'react';
 import  './Search.css';
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
-import { filterTitle} from "../../redux/actions/actions";
+import { filterTitle,removeTag} from "../../redux/actions/actions";
 
 
 class Search extends React.Component{
 
-    removeTag=(tag)=>{
-        let arr = this.props.currentFilterTag;
-         arr.splice(arr.indexOf(tag),1);
-         this.props.currentFilterTag = arr;
+    removeTag=(event)=>{
+        event.preventDefault();
+        event.stopPropagation();
+
+        // event.currentTarget.style.display='none';
+        this.props.onRemoveTag(event.target.innerHTML)
     };
 
     renderTags(){
-        if (this.props.currentFilterTag.length >0){
+        if (this.props.currentFilterTag){
         return(
-            this.props.currentFilterTag.map((item)=>{
+            this.props.currentFilterTag.map((item, index)=>{
                 return(
-                    <button className={'Search__tags__btn'} onClick={()=>this.removeTag(item)}>item</button>
+                    <button key={index}  className={'Search__tags__btn'} onClick={(event)=>this.removeTag(event)}>{item}</button>
                 )
             })
         )
@@ -26,23 +28,34 @@ class Search extends React.Component{
     };
 
     onSubmitHandler=(event)=>{
-        // event.preventDefault();
+        event.preventDefault();
         let value =document.getElementById('Search__input').value;
         this.props.onSearch(value);
         this.props.history.push('/search?title='+value);
     };
 
+
     render() {
+            let innerText =this.props.location.pathname.match(new RegExp('^/search')) ?  this.props.filterTitle: "";
+
             return(
-        <form   id={'Search__form'} className={'Search'}>
-            <input defaultValue={this.props.filterTitle} id={'Search__input'} type="text" className={'Search__field'}/>
+                <div className={'Search'}>
+        <form onSubmit={(event)=>this.onSubmitHandler(event)}  id={'Search__form'} className={'Search__form'}>
+            <input defaultValue={innerText} id={'Search__input'} type="text" className={'Search__field'}/>
             <input
 
-                id={'Search__submit'} type="submit" className={'Search__btn'} onClick={(event)=>this.onSubmitHandler(event)}/>
-            <div className={'Search__tags__wrapper'}>
-                {this.props.currentFilterTag ? this.renderTags(): null}
-            </div>
+                id={'Search__submit'} type="submit" className={'Search__btn'} />
+
         </form>
+                <div className={'Search__tags__wrapper'}>
+            {this.props.currentFilterTag
+                ?
+                this.renderTags()
+                :
+                null
+            }
+    </div>
+                </div>
     )
     }
 }
@@ -59,9 +72,16 @@ function mapDispatchToProps(dispatch) {
         onSearch:(title)=>{
             dispatch(filterTitle(title))
         },
+        onRemoveTag:(tag)=>{dispatch(removeTag(tag))}
+
     }
 }
 
 
 
 export default   connect(mapStateToProps,mapDispatchToProps) (withRouter(Search));
+
+
+
+
+

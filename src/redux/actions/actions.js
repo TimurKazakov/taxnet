@@ -1,18 +1,6 @@
-import {ADDBOOKMARK, ADDTAG, CLEARFILTERTITLE, FILTERTITLE, REMOVEBOOKMARK, REMOVETAG} from "./actionTypes";
+import { ADDTAG, CLEARFILTERTITLE, FILTERTITLE,  REMOVETAG} from "./actionTypes";
 
-export function addBookmark(title) {
-    return{
-        type:ADDBOOKMARK,
-        payload:title,
-    }
-}
-export function removeBookmark(title) {
-    return{
-        type:REMOVEBOOKMARK,
-        payload:title,
 
-    }
-}
 export function addTag(tag) {
     return{
         type:ADDTAG,
@@ -20,6 +8,7 @@ export function addTag(tag) {
     }
 }
 export function removeTag(tag) {
+
     return{
         type:REMOVETAG,
         payload:tag,

@@ -1,42 +1,11 @@
-const redux = require('redux');
+const fetch = require("node-fetch");
+function f() {
 
-
-const reducer =(state =initialState, action)=>{
-
-    switch (action.type) {
-        case  'ADDBOOKMARK':
-            return {
-                bookmarks: state.bookmarks.push({title:'dsjks'}),
-                ...state,
-
-            };
-        case  'SUBBOOKMARK':
-            return {
-                num:state.num-1254,
-                ...state
-            }
-
-        default: {
-            return state
-        }
+    console.log(__dirname+'\\react_middle\\react_middle\\react_junior\\films.json\\');
+    let films =  fetch(__dirname+' \\react_middle\\react_middle\\react_junior\\films.json');
+    if (films.ok) {
+        let json =  films.json();
+        console.log(json);
     }
 }
-
-
-const store = redux.createStore(reducer);
-
-// Actions
-const addBookmarks ={
-    type:'ADDBOOKMARK'
-
-}
-const subBookmarks ={
-    type:'SUBBOOKMARK'
-
-}
-console.log('was',store.getState());
-store.dispatch(addBookmarks);
-
-console.log('become',store.getState());
-store.dispatch(subBookmarks);
-console.log('sub',store.getState());
+f();
