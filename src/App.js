@@ -1,26 +1,43 @@
 import React from 'react';
-import logo from './logo.svg';
+import {NavLink, Route} from 'react-router-dom';
 import './App.css';
+import Film from "./components/Film/Film";
+import Search from "./components/Search/Search";
+import FilmsList from "./components/FilmsList/FilmsList";
+import Tab from "./components/Tab/Tab";
+import {withRouter} from 'react-router-dom';
+import ReturnButton from "./components/ReturnButton/ReturnButton";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+class App extends React.Component{
+    render() {
+        return (
+            <div className="App">
+                <Search/>
+                <hr/>
+                { this.props.location.pathname !=='/search'?
+                 <ul className={'App__navigation--list'}>
+                    <NavLink exact to={'/'}>Все фильмы</NavLink>
+                    <NavLink to={'/bookmarks'}>Закладки</NavLink>
+                    <NavLink to={'/search'}>Search</NavLink>
+                </ul>
+                :<ReturnButton/>
+                }
+                <hr/>
+                <Route path={'/'} exact render={ ()=> <Tab>
+                        <FilmsList films={this.props.films}/>
+                    </Tab>} />
+                <Route path={'/bookmarks'}  render={()=> <Tab>
+                        <FilmsList films={this.props.bookmarks}/>
+                    </Tab>} />
+                <Route path={'/search'}  render={()=> <Tab>
+                    <FilmsList films={this.props.films}/>
+                </Tab>} />
+                <Route path={'/film/:title'} exact render={(props) => <Film title={props.name} {...props} />}/>
+            </div>
+        );
+    }
 }
 
-export default App;
+export default   (withRouter(App));

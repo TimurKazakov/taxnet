@@ -1,0 +1,22 @@
+
+.ReturnButton{
+     display: block;
+     position: relative;
+     width: 60px;
+    /*height: 40px;*/
+    margin: 10px 30px;
+
+ }
+
+.ReturnButton:before{
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: url("../../img/iconmonstr-arrow-64-240.png");
+    background-size: contain;
+    position: absolute;
+    left: -25px;
+    bottom: 0px;
+
+}
