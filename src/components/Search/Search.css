@@ -1,0 +1,35 @@
+.Search{
+    height: 40px;
+    display: flex;
+    width: 80%;
+    margin: 20px auto;
+}
+
+.Search__field{
+    flex-grow: 2;
+}
+
+.Search__btn{
+    width: 150px;
+    position: relative;
+}
+.Search_btn:after{
+    content: "sddvd";
+    display: block;
+    width: 130px;
+    height: 140px;
+    background: url("../../img/iconmonstr-magnifier-1-240.png") red;
+    background-size: contain;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 15;
+
+}
+.Search__tags__wrapper{
+    display: flex;
+    justify-content: center;
+}
+.Search__tags__btn{
+    border-radius: 10px;
+}

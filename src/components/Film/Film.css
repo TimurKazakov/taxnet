@@ -1,0 +1,52 @@
+.Film{
+    display: flex;
+    flex-direction: column;
+    /*align-items: start;*/
+    width: 80%;
+    margin: 0 auto;
+}
+
+.Film__container{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    height: 200px;
+
+}
+.Film__poster{
+    width: 150px;
+    height: 200px;
+    background-color: brown;
+}
+.Film__descr{
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.Film__title{
+    font-size: 30px;
+
+}
+.Film__bookmark{
+    width: 150px;
+    height: 30px;
+    box-shadow: none;
+    border: 1px solid gray;
+    border-radius: 5px ;
+    outline: none;
+
+}
+.Film__bookmark--delete{
+    background: gray;
+    color: white;
+
+}
+
+.Film__bookmark--add{
+    background: white;
+    color: gray;
+    border: 1px solid grey;
+
+}
+
