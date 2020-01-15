@@ -119,7 +119,7 @@ class FilmsList extends React.Component {
         let  disableButton=()=>{
             return((this.state.previewCount <arrayToRender().length));}
         let arrayToRender=()=>{
-            let arrayToRender = this.props.films;
+
             let path = this.props.location.pathname;
             if (path==='/' || path==='/searchbytag')
             {
@@ -136,7 +136,7 @@ class FilmsList extends React.Component {
                 return arr;
             }
 
-            return arrayToRender;
+
         }
 
         return (

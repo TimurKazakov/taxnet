@@ -3,8 +3,6 @@ import './ReturnButton.css';
 import {withRouter} from 'react-router-dom'
 import {clearFilterTitle} from "../../redux/actions/actions";
 import {connect} from "react-redux";
-import inputForceUpdate from '../Search/Search';
-
 
 class  ReturnButton extends React.Component{
 
